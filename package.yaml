@@ -39,7 +39,7 @@ executables:
 tests:
   ase-haskell-test:
     main:                Spec.hs
-    source-dirs:         test
+    source-dirs:         test, src
     ghc-options:
     - -threaded
     - -rtsopts
@@ -48,3 +48,6 @@ tests:
     - ase-haskell
     - HUnit
     - QuickCheck
+    - tasty
+    - tasty-hunit
+    - tasty-quickcheck

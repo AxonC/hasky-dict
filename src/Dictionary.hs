@@ -1,14 +1,8 @@
-module Dictionary where
-
+module Dictionary (lookup, insert, remove, Dictionary, emptyDictionary) where
 import Prelude hiding (lookup)
+import BST 
 
-data BST = InternalNode Int String BST BST
-                | Leaf
+type Dictionary = BST
 
-
-lookup :: Int -> BST -> Maybe String
-lookup soughtKey Leaf = Nothing
-lookup soughtKey (InternalNode key item leftChild rightChild)
-  | soughtKey < key = lookup soughtKey leftChild
-  | soughtKey > key = lookup soughtKey rightChild
-  | otherwise = Just item
+emptyDictionary :: Dictionary k i
+emptyDictionary = Leaf

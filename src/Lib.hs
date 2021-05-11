@@ -1,9 +1,8 @@
-module Lib where
+module Lib (BST) where
+
+import BST
 
 import Prelude hiding (lookup)
 
 someFunc :: IO ()
 someFunc = putStrLn "someFunc"
-
--- data BST item = Leaf
---                 | InternalNode Int item (BST item) (BST item)

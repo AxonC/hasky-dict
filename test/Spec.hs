@@ -1,5 +1,10 @@
-import Test.HUnit
-import Test.QuickCheck
+import BSTSpec (bstTests)
+import DictionarySpec (dictionaryTests)
+
+import Test.Tasty
+
+tests :: TestTree
+tests = testGroup "Entire Test Suite" [bstTests, dictionaryTests]
 
 main :: IO ()
-main = putStrLn "Test suite not yet implemented"
+main = defaultMain tests
