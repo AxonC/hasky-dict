@@ -39,7 +39,7 @@ executables:
 tests:
   ase-haskell-test:
     main:                Spec.hs
-    source-dirs:         test, src
+    source-dirs:         test
     ghc-options:
     - -threaded
     - -rtsopts

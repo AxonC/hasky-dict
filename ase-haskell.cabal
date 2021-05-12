@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 9b287fa1a86efa9969b9b9dc0f5efc82147ea5e9751aaafae253c614a5b55e8e
+-- hash: 473547dbb22ab6e4446bea89ed80c597dc4ae81ff88cb5acaf3267aa37f3e884
 
 name:           ase-haskell
 version:        0.1.0.0
@@ -54,9 +54,11 @@ test-suite ase-haskell-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      BSTSpec
+      DictionarySpec
       Paths_ase_haskell
   hs-source-dirs:
-      test 
+      test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       HUnit
