@@ -5,7 +5,7 @@ import Prelude hiding (lookup)
 -- k = key, v = value
 data BST k v = InternalNode k v (BST k v) (BST k v)
                 | Leaf
-                deriving Show
+                deriving (Show, Eq)
 
 -- K must implement a sub-class which has a comparison operator for key comparison.
 insert :: (Ord k) => k -> v -> BST k v -> BST k v

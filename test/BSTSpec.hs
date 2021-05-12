@@ -89,6 +89,15 @@ prop_test_to_list pairs = let distinctPairs = nubBy ((==) `on` fst) pairs in
         sortedPairs == BST.to_list (populateBSTFromPairs pairs)
 -- END OF REFERENCE
 
+prop_test_equality :: [(Int, Int)] -> Bool
+prop_test_equality pairs = populateBSTFromPairs pairs == populateBSTFromPairs pairs
+
+prop_test_inequality :: Int -> Int -> [(Int, Int)] -> Bool 
+prop_test_inequality extraKey extraValue pairs = do
+    let tree = populateBSTFromPairs pairs in
+        -- inequality check needs to not insert an existing key.
+     BST.lookup extraKey tree /= Nothing || populateBSTFromPairs pairs /= BST.insert extraKey extraValue (populateBSTFromPairs pairs) 
+
 bstTests :: TestTree
 bstTests = testGroup "BST Test Suite" [
     testCase "test insert with same key" test_insert_with_same_key,
@@ -100,5 +109,7 @@ bstTests = testGroup "BST Test Suite" [
     testProperty "test tree can have nodes removed" prop_test_removal,
     testProperty "test internal remove node" prop_test_remove_node,
     testProperty "test to list function" prop_test_to_list,
-    testProperty "test remove if function" prop_test_remove_if
+    testProperty "test remove if function" prop_test_remove_if,
+    testProperty "test equality" prop_test_equality,
+    testProperty "test inequality" prop_test_inequality
     ]
