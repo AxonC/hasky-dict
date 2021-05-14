@@ -64,6 +64,21 @@ test_insert_into_leaf_with_greater_key =
     let tree = InternalNode key value Leaf Leaf in
         assertEqual "" (Just value) (BST.lookup key (BST.insert (key + 1) (value + 1) tree))
 
+test_insert_new_node_increments_size_by_one :: Assertion 
+test_insert_new_node_increments_size_by_one =
+    let key = 2 in
+    let value = 1 in
+    let tree = InternalNode key value Leaf Leaf in
+        assertEqual "" (2 :: Int) (BST.size (BST.insert (key + 1) value tree))
+ 
+
+test_insert_into_existing_node_does_not_increment_size :: Assertion 
+test_insert_into_existing_node_does_not_increment_size = 
+    let key = 2 in
+    let value = 1 in
+    let tree = InternalNode key value Leaf Leaf in
+        assertEqual "" (1 :: Int) (BST.size (BST.insert key value tree))
+
 prop_insert :: Int -> Int -> BST Int Int -> Bool
 prop_insert passedKey passedValue tree = Just passedValue == BST.lookup passedKey (BST.insert passedKey passedValue tree)
 
@@ -101,6 +116,12 @@ prop_test_inequality extraKey extraValue pairs = do
         -- inequality check needs to not insert an existing key.
      BST.lookup extraKey tree /= Nothing || populateBSTFromPairs pairs /= BST.insert extraKey extraValue (populateBSTFromPairs pairs) 
 
+prop_size :: [(Int, Int)] -> Bool
+prop_size pairs = do
+    let tree = populateBSTFromPairs pairs in
+        let expectedSize = length (nubBy ((==) `on` fst) pairs) in
+            expectedSize == BST.size tree
+
 bstTests :: TestTree
 bstTests = testGroup "BST Test Suite" [
     testCase "test insert with same key" test_insert_with_same_key,
@@ -108,11 +129,14 @@ bstTests = testGroup "BST Test Suite" [
     testCase "test insert into leaf" test_insert_into_leaf,
     testCase "test insert into leaf with key less than previous" test_insert_into_leaf_with_less_key,
     testCase "test insert into tree with key greater than previous" test_insert_into_leaf_with_greater_key,
+    testCase "test insert into tree increments size by one" test_insert_new_node_increments_size_by_one,
+    testCase "test insert into existing node does not increment size" test_insert_into_existing_node_does_not_increment_size,
     testProperty "test insert" prop_insert,
     testProperty "test tree can have nodes removed" prop_test_removal,
     testProperty "test internal remove node" prop_test_remove_node,
     testProperty "test to list function" prop_test_to_list,
     testProperty "test remove if function" prop_test_remove_if,
     testProperty "test equality" prop_test_equality,
-    testProperty "test inequality" prop_test_inequality
+    testProperty "test inequality" prop_test_inequality,
+    testProperty "test size" prop_size
     ]

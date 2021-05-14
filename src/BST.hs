@@ -53,3 +53,7 @@ to_list :: BST k v -> [(k, v)]
 to_list Leaf = []
 -- go left, visit the root, go right (in-order traversal)
 to_list (InternalNode key value leftChild rightChild) = to_list leftChild ++ [(key, value)] ++ to_list rightChild
+
+size :: BST k v -> Int
+size Leaf = 0
+size node@(InternalNode _ _ leftChild rightChild) = size leftChild + 1 + size rightChild
