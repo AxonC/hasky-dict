@@ -8,7 +8,6 @@ import Test.QuickCheck.Function
 
 import Data.Function ( on )
 import Data.List
-import Control.Monad
 
 import BST
 import Numeric.Natural
@@ -68,12 +67,16 @@ test_insert_into_leaf_with_greater_key =
 prop_insert :: Int -> Int -> BST Int Int -> Bool
 prop_insert passedKey passedValue tree = Just passedValue == BST.lookup passedKey (BST.insert passedKey passedValue tree)
 
-prop_test_removal :: Int -> BST Int Int -> Bool
-prop_test_removal keyToRemove tree = Nothing == BST.lookup keyToRemove (BST.remove keyToRemove tree)
+prop_test_removal :: Int -> Int -> BST Int Int -> Bool
+prop_test_removal keyToRemove value tree = do 
+    let modifiedTree = BST.insert keyToRemove value tree
+    Nothing == BST.lookup keyToRemove (BST.remove keyToRemove modifiedTree)
 
 prop_test_remove_node :: BST Int Int -> Bool
 prop_test_remove_node Leaf = True -- removal of leaf has no effect.
-prop_test_remove_node tree@(InternalNode key _ _ _) = Nothing == BST.lookup key (BST.removeNode tree)
+prop_test_remove_node tree@(InternalNode key value _ _) = do 
+    let modifiedTree = BST.insert key value tree
+    Nothing == BST.lookup key (BST.removeNode modifiedTree)
 
 prop_test_remove_if :: Fun Int Bool -> [(Int, Int)] -> Bool
 prop_test_remove_if (Fn predicate) pairs = 
